@@ -1,0 +1,9 @@
+﻿  cinema.cpp
+  cinemaRooms.cpp
+  hour.cpp
+C:\Users\rodri\source\repos\TicketsalesCinemaSA\TicketsalesCinemaSA\cinemaRooms.cpp(28,13): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\rodri\source\repos\TicketsalesCinemaSA\TicketsalesCinemaSA\cinemaRooms.cpp(32,12): warning C4244: 'return': conversión de 'float' a 'int'; posible pérdida de datos
+  movies.cpp
+  TicketsalesCinemaSA.cpp
+  Generando código...
+  TicketsalesCinemaSA.vcxproj -> C:\Users\rodri\source\repos\TicketsalesCinemaSA\x64\Debug\TicketsalesCinemaSA.exe
