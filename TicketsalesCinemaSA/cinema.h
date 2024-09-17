@@ -6,16 +6,18 @@
 #include <string>
 #include <windows.h>
 #include "movies.h"
-#include "hour.h"
+#include "timetable.h"
 #include "cinemaRooms.h"
+#include "client.h"
 
 class Cinema
 {
 private:
     static const int MAX_SIZE = 100;
     Movies movie[MAX_SIZE];
-    Hour hour[MAX_SIZE];
+    Timetable timetable[MAX_SIZE];
     CinemaRooms* rooms[MAX_SIZE];
+    Client client[MAX_SIZE];
     int movieSize;
     int roomSize;
     int roomCount;
@@ -47,6 +49,8 @@ public:
     void distributeRooms();
 
     void reservation();
+
+    void purchase();
 
     void addRoomInformation();
 

@@ -24,10 +24,13 @@
     <ClCompile Include="cinema.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="hour.cpp">
+    <ClCompile Include="timetable.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="cinemaRooms.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="client.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,10 +41,13 @@
     <ClInclude Include="cinema.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="hour.h">
+    <ClInclude Include="timetable.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="cinemaRooms.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="client.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

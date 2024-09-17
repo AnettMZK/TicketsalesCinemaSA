@@ -3,6 +3,7 @@
 Cinema::Cinema() : movieSize(0), roomCount(0), roomSize(0) {
     for (int i = 0; i < MAX_SIZE; i++) {
         rooms[i] = nullptr;
+        movieAssignments[i] = 0;
     }
 }
 
@@ -183,15 +184,15 @@ void Cinema::addHour() {
 
         std::cout << "Agregue el dia que sera emitida: ";
         std::getline(std::cin >> std::ws, date);
-        this->hour[i].setDate(date);
+        this->timetable[i].setDate(date);
 
         std::cout << "Agregue la hora inicial: ";
         std::getline(std::cin >> std::ws, initialHour);
-        this->hour[i].setInitialHour(initialHour);
+        this->timetable[i].setInitialHour(initialHour);
 
         std::cout << "Agregue la hora de finalizacion: ";
         std::getline(std::cin >> std::ws, finalHour);
-        this->hour[i].setFinalHour(finalHour);
+        this->timetable[i].setFinalHour(finalHour);
         std::cout << std::endl;
     }
     std::cout << std::endl;
@@ -204,9 +205,9 @@ void Cinema::printHourInformation() {
         std::cout << "Pelicula: " << this->movie[i].getName() << std::endl;
         setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
-        std::cout << "Dia: " << this->hour[i].getDate() << std::endl;
-        std::cout << "Hora de comienzo: " << this->hour[i].getInitialHour() << std::endl;
-        std::cout << "Hora de finalizacion: " << this->hour[i].getFinalHour() << std::endl;
+        std::cout << "Dia: " << this->timetable[i].getDate() << std::endl;
+        std::cout << "Hora de comienzo: " << this->timetable[i].getInitialHour() << std::endl;
+        std::cout << "Hora de finalizacion: " << this->timetable[i].getFinalHour() << std::endl;
     }
 
 }
@@ -227,9 +228,9 @@ void Cinema::distributeRooms() {
             std::cout << "Sala " << i + 1 << std::endl;
             setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
-            std::cout << "El dia: " << hour[randomMovieIndex].getDate() << std::endl;
-            std::cout << "Comienza: " << hour[randomMovieIndex].getInitialHour() << std::endl;
-            std::cout << "Finaliza: " << hour[randomMovieIndex].getFinalHour() << std::endl;
+            std::cout << "El dia: " << timetable[randomMovieIndex].getDate() << std::endl;
+            std::cout << "Comienza: " << timetable[randomMovieIndex].getInitialHour() << std::endl;
+            std::cout << "Finaliza: " << timetable[randomMovieIndex].getFinalHour() << std::endl;
             std::cout << std::endl;
         }
         std::cout << std::endl;
@@ -239,11 +240,10 @@ void Cinema::distributeRooms() {
     }
 }
 
-
-
 void Cinema::reservation() {
     int roomNumber;
     int reserve, row = 0, col = 0;
+    int spaceForText = 12;
 
     for (int i = 0; i < roomCount; i++) {
         int assignedMovieIndex = movieAssignments[i];
@@ -252,9 +252,9 @@ void Cinema::reservation() {
         std::cout << movie[assignedMovieIndex].getName() << " en la sala " << i + 1 << std::endl;
         setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
-        std::cout << "El dia: " << hour[assignedMovieIndex].getDate() << std::endl;
-        std::cout << "Comienza: " << hour[assignedMovieIndex].getInitialHour() << std::endl;
-        std::cout << "Finaliza: " << hour[assignedMovieIndex].getFinalHour() << std::endl;
+        std::cout << "El dia: " << timetable[assignedMovieIndex].getDate() << std::endl;
+        std::cout << "Comienza: " << timetable[assignedMovieIndex].getInitialHour() << std::endl;
+        std::cout << "Finaliza: " << timetable[assignedMovieIndex].getFinalHour() << std::endl;
         std::cout << std::endl;
     }
 
@@ -265,11 +265,31 @@ void Cinema::reservation() {
     std::cout << std::endl;
 
     std::cout << "\n------------------------------------\n";
-    setConsoleColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+    setConsoleColor(FOREGROUND_BLUE | FOREGROUND_GREEN);
     std::cout << "     INFORMACION DE LA SALA     " << std::endl;
     setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
     std::cout << std::endl;
-    rooms[assignedMovieIndex]->printChairs();
+
+    setConsoleColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+    std::cout << char(220) << " ";
+    setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    std::cout << "DISPONIBLE";
+    std::cout << std::string(spaceForText - 10, ' ');
+
+    setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+    std::cout << char(220) << " ";
+    setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    std::cout << "RESERVADO";
+    std::cout << std::string(spaceForText - 8, ' ');
+
+    setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+    std::cout << char(220) << " ";
+    setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    std::cout << "COMPRADO" << std::endl;
+
+    std::cout << std::endl;
+
+    rooms[roomNumber - 1]->printChairs();
     std::cout << std::endl;
     std::cout << "PELICULA: " << movie[assignedMovieIndex].getName() << std::endl;
     std::cout << "BUTACAS DISPONIBLES: " << rooms[roomNumber - 1]->getActualChairs() << std::endl;
@@ -287,18 +307,74 @@ void Cinema::reservation() {
         std::cin >> row;
         std::cout << "Digite la columna que desea: ";
         std::cin >> col;
-        rooms[assignedMovieIndex]->setReserved(row, col);
-        rooms[assignedMovieIndex]->printChairs();
-        std::cout << "POSICION RESERVADA" << std::endl;
+        std::cout << std::endl;
+
+        if (rooms[roomNumber - 1]->isSeatAvailable(row - 1, col - 1)) {
+            rooms[roomNumber - 1]->setReserved(row - 1, col - 1);
+            rooms[roomNumber - 1]->printChairs();
+            this->client[roomNumber - 1].setTicket();
+            this->client[roomNumber - 1].setReservedChair(row, col);
+            std::cout << "POSICION RESERVADA" << std::endl;
+            std::cout << "Su ticket es: " << this->client[roomNumber - 1].getTicket() << std::endl;
+        }
+        else {
+            std::cout << "La silla seleccionada ya está reservada. Por favor, elija otra." << std::endl;
+            reservation();
+        }
     }
     else if (reserve == 2) {
-        reservation();
+        return;
     }
     else {
-        std::cout << "Opction digitada invalida";
+        std::cout << "Opcion digitada invalida" << std::endl;
         reservation();
     }
+    setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
+
+
+
+void Cinema::purchase() {
+    int row = 0, col = 0, id = 0, creditCard = 0;
+    bool hasActiveReservation = false;
+
+    for (int i = 0; i < roomCount; i++) {
+        int assignedMovieIndex = movieAssignments[i];
+        if (this->client[i].getTicket() != 0) {
+            hasActiveReservation = true;
+
+            std::cout << "Digite su numero de cedula: ";
+            std::cin >> id;
+            this->client[i].setId(id);
+
+            std::cout << "Digite su numero de tarjeta: ";
+            std::cin >> creditCard;
+            this->client[i].setCreditCard(creditCard);
+
+            int reservedRow = this->client[i].getReservedRow();
+            int reservedCol = this->client[i].getReservedCol();
+
+            if (rooms[i]->isSeatReserved(reservedRow - 1, reservedCol - 1)) {
+                rooms[i]->setPucharsed(reservedRow - 1, reservedCol - 1);
+
+                std::cout << "Compra completada. El asiento [" << reservedRow << ", " << reservedCol << "] ha sido pagado." << std::endl;
+                rooms[i]->printChairs();
+                setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+            }
+            else {
+                std::cout << "El asiento no esta reservado o ya ha sido comprado." << std::endl;
+                return;
+            }
+        }
+    }
+
+    if (hasActiveReservation == false) {
+        std::cout << "No tiene ninguna reserva activa para esta pelicula." << std::endl;
+    }
+}
+
+
+
 
 void Cinema::menu() {
     int option = 0;
@@ -466,6 +542,7 @@ void Cinema::menu() {
             std::cout << "----------------------\n";
 
             reservation();
+
             break;
 
         case 4:
@@ -474,6 +551,9 @@ void Cinema::menu() {
             std::cout << "        Venta          \n";
             setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
             std::cout << "----------------------\n";
+
+            purchase();
+
             break;
 
         default:

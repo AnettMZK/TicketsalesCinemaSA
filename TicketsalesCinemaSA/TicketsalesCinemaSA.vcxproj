@@ -129,14 +129,16 @@
   <ItemGroup>
     <ClCompile Include="cinema.cpp" />
     <ClCompile Include="cinemaRooms.cpp" />
-    <ClCompile Include="hour.cpp" />
+    <ClCompile Include="client.cpp" />
+    <ClCompile Include="timetable.cpp" />
     <ClCompile Include="movies.cpp" />
     <ClCompile Include="TicketsalesCinemaSA.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cinema.h" />
     <ClInclude Include="cinemaRooms.h" />
-    <ClInclude Include="hour.h" />
+    <ClInclude Include="client.h" />
+    <ClInclude Include="timetable.h" />
     <ClInclude Include="movies.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
